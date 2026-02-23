@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VOC Archive - De Vereenigde Oostindische Compagnie</title>
+    <title>VOC Imperial Archive - Presentation Edition Kelompok 3</title>
     <!-- Frameworks & Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=UnifrakturMaguntia&family=Old+Standard+TT:ital@0;1&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -16,6 +16,8 @@
             --ink: #1a1410;
             --gold: #b38b4d;
             --blood: #7c2d12;
+            --ocean: #1a3a4a;
+            --iron: #454545;
         }
         
         body {
@@ -27,204 +29,386 @@
 
         .font-blackletter { font-family: 'UnifrakturMaguntia', cursive; }
         .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-old { font-family: 'Old Standard TT', serif; }
 
-        /* Parchment Effect */
+        /* Enhanced Parchment Background with radial vignette */
         .parchment-texture {
             background-color: var(--parchment);
             background-image: url('https://www.transparenttextures.com/patterns/old-map.png');
-            box-shadow: inset 0 0 100px rgba(0,0,0,0.1);
-        }
-
-        /* Decorative Borders */
-        .border-ornament {
-            border: 10px solid transparent;
-            border-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png') 30 round;
-            border-color: var(--gold);
+            box-shadow: inset 0 0 250px rgba(0,0,0,0.35);
+            position: relative;
         }
 
         /* Video Theater Mode */
         .video-wrapper {
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
         }
         .theater-active {
             position: fixed;
             top: 0; left: 0;
             width: 100vw; height: 100vh;
             z-index: 100;
-            background: black;
+            background: #000;
             padding: 0; border: none;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: var(--ink); }
-        ::-webkit-scrollbar-thumb { background: var(--gold); }
-
-        .glass-nav {
-            background: rgba(26, 20, 16, 0.9);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--gold);
+        /* Imperial Border styling */
+        .border-imperial {
+            border: 15px solid transparent;
+            border-image: url('https://www.transparenttextures.com/patterns/black-linen.png') 30 round;
+            border-color: var(--gold);
         }
 
-        .fade-enter-active, .fade-leave-active { transition: opacity 0.5s; }
-        .fade-enter-from, .fade-leave-to { opacity: 0; }
+        .img-archive {
+            filter: sepia(0.6) contrast(1.1) brightness(0.85);
+            border: 3px solid var(--gold);
+            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+        .img-archive:hover {
+            filter: sepia(0.1) contrast(1) brightness(1);
+            transform: scale(1.04) translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            z-index: 30;
+        }
+
+        /* Navbar glass effect */
+        .glass-nav {
+            background: rgba(26, 20, 16, 0.99);
+            backdrop-filter: blur(30px);
+            border-bottom: 3px solid var(--gold);
+        }
+
+        /* Chapter Header styling */
+        .chapter-header {
+            @apply flex flex-col items-center mb-24 text-center;
+        }
+        .chapter-header .line {
+            @apply w-48 h-1 bg-gold my-6;
+        }
+        .chapter-title-main {
+            @apply font-cinzel text-6xl text-blood mb-2 uppercase tracking-widest drop-shadow-sm;
+        }
+
+        /* Tables styling */
+        .archive-table {
+            @apply w-full border-collapse bg-white/50 backdrop-blur-sm;
+        }
+        .archive-table th {
+            @apply bg-blood text-gold font-cinzel p-6 text-left uppercase text-sm tracking-widest border-b-2 border-gold;
+        }
+        .archive-table td {
+            @apply p-6 border-b border-stone-300 text-lg font-old;
+        }
+        .archive-table tr:hover {
+            @apply bg-gold/10 transition-colors;
+        }
+
+        /* Scrollbar customization */
+        ::-webkit-scrollbar { width: 14px; }
+        ::-webkit-scrollbar-track { background: var(--ink); }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(var(--gold), var(--blood)); 
+            border: 4px solid var(--ink);
+            border-radius: 12px;
+        }
+
+        /* Profile Image Styles */
+        .profile-frame {
+            position: relative;
+            width: 250px;
+            height: 320px;
+            overflow: hidden;
+            border: 8px solid #fff;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            background: #eee;
+            transition: all 0.5s ease;
+        }
+        .profile-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: sepia(0.7) contrast(1.1);
+            transition: all 0.5s ease;
+        }
+        .profile-frame:hover img {
+            filter: sepia(0) contrast(1);
+            transform: scale(1.1);
+        }
+        .profile-frame:hover {
+            border-color: var(--gold);
+            transform: translateY(-10px);
+        }
+
+        /* Section Spacing */
+        .sec-padding { @apply py-40 px-10 md:px-20; }
+
+        /* Animation Classes */
+        @keyframes revealUp {
+            from { opacity: 0; transform: translateY(60px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-reveal { animation: revealUp 1.2s ease-out forwards; }
     </style>
 </head>
 <body class="overflow-x-hidden">
 
     <div id="app">
-        <!-- Navigation -->
-        <nav class="glass-nav fixed top-0 w-full z-[60] py-4 px-6 flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <span class="font-blackletter text-4xl text-gold">VOC</span>
-                <div class="hidden md:block h-8 w-px bg-stone-700"></div>
-                <span class="hidden md:block font-cinzel text-xs tracking-[0.3em] text-stone-400">ARCHIVUM DIGITALE</span>
+        <!-- Floating Navigation -->
+        <div class="fixed bottom-10 right-10 z-[80] flex flex-col gap-5">
+            <button @click="toggleAudio" class="w-16 h-16 rounded-full bg-gold text-ink flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all border-4 border-ink group">
+                <i :class="['ph-bold text-2xl group-hover:rotate-12', audioPlaying ? 'ph-speaker-high' : 'ph-speaker-slash']"></i>
+            </button>
+            <a href="#team" class="w-16 h-16 rounded-full bg-blood text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-all font-cinzel text-xl font-bold border-4 border-gold/30 shadow-gold/20">3</a>
+        </div>
+
+        <!-- Master Navbar -->
+        <nav class="glass-nav fixed top-0 w-full z-[60] py-6 px-12 flex justify-between items-center shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+            <div class="flex items-center gap-8">
+                <div class="cursor-pointer group" @click="goHome">
+                    <span class="font-blackletter text-7xl text-gold group-hover:text-white transition-all">VOC</span>
+                </div>
+                <div class="h-14 w-px bg-stone-700"></div>
+                <div class="flex flex-col">
+                    <span class="font-cinzel text-[11px] tracking-[0.6em] text-stone-400">IMPERIAL ARCHIVE EXHIBITION</span>
+                    <span class="font-serif text-[14px] font-bold text-gold uppercase tracking-[0.3em]">KELOMPOK 3 • PRESENTASI INTERAKTIF</span>
+                </div>
             </div>
             
-            <div class="flex items-center gap-8 font-cinzel text-[10px] tracking-widest text-stone-300">
-                <a href="#intro" class="hover:text-gold transition-colors">MULAI</a>
-                <a href="#oktroi" class="hover:text-gold transition-colors">HAK OKTROI</a>
-                <a href="#peta" class="hover:text-gold transition-colors">RUTE NAVIGASI</a>
-                <a href="#tokoh" class="hover:text-gold transition-colors">PENGUASA</a>
-                <button @click="toggleSearch" class="text-gold text-xl"><i class="ph ph-magnifying-glass"></i></button>
+            <div class="hidden 2xl:flex items-center gap-12 font-cinzel text-[11px] tracking-[0.4em] text-stone-300 uppercase">
+                <a v-for="link in navLinks" :key="link.href" :href="link.href" class="hover:text-gold transition-all relative group">
+                    {{ link.label }}
+                    <span class="absolute -bottom-2 left-0 w-0 h-0.5 bg-gold group-hover:w-full transition-all"></span>
+                </a>
+                <a href="#team" class="bg-gold text-ink px-6 py-2 rounded-sm font-bold hover:bg-white hover:scale-105 transition-all">WAJAH TIM</a>
             </div>
+            
+            <button @click="toggleSearch" class="text-gold text-4xl hover:rotate-90 transition-all"><i class="ph ph-magnifying-glass"></i></button>
         </nav>
 
-        <!-- Search Overlay -->
+        <!-- SEARCH OVERLAY -->
         <transition name="fade">
-            <div v-if="searchOpen" class="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-6">
-                <button @click="toggleSearch" class="absolute top-10 right-10 text-white text-4xl">&times;</button>
-                <div class="w-full max-w-2xl text-center">
-                    <input type="text" v-model="searchQuery" placeholder="Cari topik (misal: Pala, Coen, Korupsi)..." 
-                           class="w-full bg-transparent border-b-2 border-gold py-4 text-3xl text-gold font-cinzel focus:outline-none">
-                    <div class="mt-8 flex flex-wrap justify-center gap-4">
-                        <span v-for="tag in ['Rempah', 'Batavia', 'Kapal', 'Banda']" 
-                              @click="searchQuery = tag"
-                              class="px-4 py-1 border border-stone-600 rounded-full text-stone-400 cursor-pointer hover:border-gold hover:text-gold">
-                            #{{ tag }}
-                        </span>
-                    </div>
+            <div v-if="searchOpen" class="fixed inset-0 z-[100] bg-black/98 flex items-center justify-center p-12">
+                <button @click="toggleSearch" class="absolute top-12 right-12 text-white text-7xl hover:text-gold transition-all">&times;</button>
+                <div class="w-full max-w-5xl text-center">
+                    <p class="font-cinzel text-gold text-sm tracking-[1em] mb-10 uppercase">Navigasi Arsip Kelompok 3</p>
+                    <input type="text" v-model="searchQuery" placeholder="Cari data (Gubernur, Kapal, Rempah)..." 
+                           class="w-full bg-transparent border-b-4 border-gold/30 py-10 text-6xl text-white font-old italic focus:border-gold focus:outline-none transition-all text-center">
                 </div>
             </div>
         </transition>
 
-        <!-- Hero Section + Video -->
-        <header id="intro" class="relative pt-24 pb-16 px-4 flex flex-col items-center bg-[url('https://images.unsplash.com/photo-1516733968668-dbdce39c46ef?auto=format&fit=crop&q=80&w=2000')] bg-fixed bg-cover">
-            <div class="absolute inset-0 bg-black/70"></div>
+        <!-- HERO SECTION -->
+        <header id="intro" class="relative min-h-screen flex flex-col items-center justify-center pt-24 bg-[url('https://images.unsplash.com/photo-1516733968668-dbdce39c46ef?auto=format&fit=crop&q=80&w=2000')] bg-fixed bg-center">
+            <div class="absolute inset-0 bg-gradient-to-b from-ink via-ink/40 to-ink"></div>
             
-            <div :class="['video-wrapper relative z-10 w-full max-w-5xl shadow-[0_0_50px_rgba(0,0,0,0.8)] border-2 border-gold/30 rounded-lg overflow-hidden', { 'theater-active': isTheaterMode }]">
-                <!-- Controls -->
-                <div class="absolute top-4 right-4 z-20 flex gap-4">
-                    <button @click="toggleTheater" class="bg-black/60 text-gold p-3 rounded-full hover:bg-gold hover:text-black transition-all">
+            <div class="relative z-10 text-center mb-20 px-8 animate-reveal">
+                <p class="font-cinzel text-gold text-sm tracking-[1.5em] mb-10 uppercase">Eksibisi Sejarah Digital - Kelompok 3</p>
+                <h1 class="font-blackletter text-8xl md:text-[14rem] text-gold mb-6 leading-none drop-shadow-[0_20px_20px_rgba(0,0,0,0.9)]">
+                    Imperium VOC
+                </h1>
+                <p class="font-old italic text-stone-300 text-4xl md:text-6xl border-y-2 border-gold/30 py-12 uppercase tracking-[0.3em]">
+                    Monopoli & Kejayaan Samudra
+                </p>
+                <div class="mt-12 font-cinzel text-gold text-2xl tracking-[0.8em] font-bold">PRESENTASI KELOMPOK 3</div>
+            </div>
+
+            <div :class="['video-wrapper relative z-10 w-full max-w-7xl shadow-[0_0_200px_rgba(0,0,0,1)] border-[12px] border-gold/10 bg-black', { 'theater-active': isTheaterMode }]">
+                <div class="absolute top-10 right-10 z-20 flex gap-6">
+                    <button @click="toggleTheater" class="bg-black/80 text-gold p-6 rounded-full border border-gold/40 hover:bg-gold hover:text-ink transition-all shadow-2xl">
                         <i :class="isTheaterMode ? 'ph-bold ph-arrows-in' : 'ph-bold ph-arrows-out-line-vertical'"></i>
                     </button>
-                    <button v-if="isTheaterMode" @click="toggleTheater" class="bg-red-900/80 text-white px-4 py-2 rounded font-cinzel text-xs">TUTUP THEATER</button>
                 </div>
-
-                <video ref="mainVideo" class="w-full h-full object-cover" controls poster="https://raw.githubusercontent.com/denispedia/assets/main/voc-poster.jpg">
+                <video ref="mainVideo" class="w-full h-full object-cover" controls>
                     <source src="https://github.com/intel/intel-ipk/raw/master/test/data/test.mp4" type="video/mp4">
                 </video>
             </div>
-
-            <div v-if="!isTheaterMode" class="relative z-10 mt-12 text-center text-white">
-                <h1 class="font-blackletter text-7xl md:text-9xl text-gold mb-2">Vereenigde Oostindische Compagnie</h1>
-                <p class="font-cinzel tracking-[0.5em] text-stone-400 text-sm md:text-xl">MEGAKORPORASI PERTAMA DI DUNIA (1602 - 1799)</p>
-            </div>
         </header>
 
-        <!-- Main Content -->
         <main class="parchment-texture">
             
-            <!-- Section: Hak Oktroi (The Power) -->
-            <section id="oktroi" class="py-20 px-6 max-w-6xl mx-auto border-b border-stone-300">
-                <div class="grid md:grid-cols-2 gap-16 items-center">
-                    <div>
-                        <h2 class="font-cinzel text-4xl text-blood mb-6">Hak Istimewa (Oktroi)</h2>
-                        <p class="text-xl leading-relaxed mb-6 italic">"Sebuah perusahaan dagang yang memiliki kedaulatan layaknya sebuah negara."</p>
-                        <div class="space-y-4">
-                            <div v-for="hak in hakOktroi" :key="hak.title" class="flex gap-4 p-4 bg-white/40 border-l-4 border-gold shadow-sm">
-                                <i :class="['ph-fill text-2xl text-gold', hak.icon]"></i>
-                                <div>
-                                    <h4 class="font-bold text-stone-800">{{ hak.title }}</h4>
-                                    <p class="text-sm text-stone-600">{{ hak.desc }}</p>
+            <!-- BAB 1: Genesis Penjelajahan -->
+            <section id="sec1" class="sec-padding max-w-7xl mx-auto border-b border-stone-300">
+                <div class="chapter-header">
+                    <h2 class="chapter-title-main">Bab I: Awal Penjelajahan</h2>
+                    <div class="line"></div>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-24 items-start">
+                    <div class="space-y-10 text-2xl font-old leading-relaxed text-justify text-stone-800">
+                        <p>Penjelajahan samudra oleh bangsa Belanda pada akhir abad ke-16 didorong oleh ambisi ekonomi yang besar untuk mematahkan dominasi Portugal dan Spanyol dalam perdagangan rempah dunia. Sebelum tahun 1602, kapal-kapal dagang Belanda berlayar secara mandiri dalam kelompok-kelompok kecil yang dikenal sebagai <em>Voor-compagnieën</em>.</p>
+                        <p>Namun, kebebasan ini membawa petaka ekonomi. Kompetisi internal yang sangat sengit di antara sesama pedagang Belanda menyebabkan lonjakan harga beli di pelabuhan-pelabuhan Nusantara, sementara harga jual di pasar Eropa anjlok drastis akibat kelebihan pasokan.</p>
+                        <p>Maka dari itu, pada 20 Maret 1602, pemerintah Belanda menggabungkan kongsi-kongsi dagang tersebut menjadi satu entitas raksasa: <strong>Vereenigde Oostindische Compagnie (VOC)</strong>.</p>
+                    </div>
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1599411933092-995202868c2d?auto=format&fit=crop&q=80&w=1000" class="img-archive w-full h-[600px] object-cover rounded-sm">
+                        <div class="absolute -bottom-10 -left-10 bg-blood text-gold p-10 shadow-2xl border-4 border-gold italic font-old text-2xl max-w-md">
+                            "Persatuan adalah kunci utama menaklukkan samudra."
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BAB 2: Heeren XVII & Hak Oktroi -->
+            <section id="sec2" class="sec-padding bg-white/20 border-b border-stone-300">
+                <div class="chapter-header">
+                    <h2 class="chapter-title-main">Bab II: Daulat Oktroi</h2>
+                    <div class="line"></div>
+                </div>
+                
+                <div class="max-w-7xl mx-auto grid lg:grid-cols-3 gap-16 mb-24">
+                    <div class="lg:col-span-2 space-y-8 text-2xl font-old leading-relaxed text-stone-800">
+                        <p>VOC dikendalikan oleh dewan direktur yang dikenal sebagai <strong>Heeren Zeventien</strong> (Tuan-Tuan Tujuh Belas). Dewan ini mewakili enam kantor regional atau 'Kamar' di Belanda: Amsterdam, Zeeland, Delft, Rotterdam, Hoorn, dan Enkhuizen.</p>
+                        <p>VOC diberikan <strong>Hak Oktroi</strong> yang memberikan kewenangan kedaulatan layaknya sebuah negara: berhak menyatakan perang, mencetak uang, dan membangun tentara sendiri.</p>
+                    </div>
+                    <div class="bg-ink p-10 border-imperial flex flex-col justify-center">
+                        <h4 class="font-cinzel text-gold text-2xl mb-6 text-center">Distribusi Kursi</h4>
+                        <ul class="space-y-4 font-old text-stone-400 text-lg">
+                            <li class="flex justify-between border-b border-stone-800 pb-2"><span>Amsterdam</span> <span class="text-gold">8 Kursi</span></li>
+                            <li class="flex justify-between border-b border-stone-800 pb-2"><span>Middelburg</span> <span class="text-gold">4 Kursi</span></li>
+                            <li class="flex justify-between font-bold text-gold pt-2 uppercase text-xs tracking-widest"><span>Total Penguasa</span> <span>17 Kursi</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+                    <div v-for="hak in hakOktroiDetail" :key="hak.title" class="p-10 border-2 border-gold bg-white shadow-xl hover:-translate-y-4 transition-all group">
+                        <div class="w-20 h-20 bg-ink text-gold flex items-center justify-center rounded-full mb-8 group-hover:bg-blood transition-colors">
+                            <i :class="['text-4xl', hak.icon]"></i>
+                        </div>
+                        <h4 class="font-cinzel text-2xl font-bold mb-6 text-blood">{{ hak.title }}</h4>
+                        <p class="font-old text-xl text-stone-700 leading-relaxed">{{ hak.desc }}</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BAB 3: Armada Maritim -->
+            <section id="sec3" class="sec-padding bg-ink text-stone-300">
+                <div class="max-w-7xl mx-auto">
+                    <h2 class="font-cinzel text-6xl text-gold mb-20 text-center uppercase tracking-widest border-b-2 border-gold/30 pb-10">Bab III: Kekuatan Armada</h2>
+                    <div class="grid lg:grid-cols-3 gap-20">
+                        <div class="lg:col-span-2 space-y-16">
+                            <div class="grid md:grid-cols-2 gap-12">
+                                <div v-for="ship in fleetData" :key="ship.name" class="p-10 border-2 border-stone-800 bg-stone-900/60 hover:border-gold transition-all group shadow-inner">
+                                    <h5 class="font-cinzel text-gold text-3xl uppercase tracking-tighter mb-4">{{ ship.name }}</h5>
+                                    <p class="font-old text-stone-400 text-xl mb-10 leading-relaxed">{{ ship.desc }}</p>
+                                    <div class="flex gap-10 border-t border-stone-800 pt-8 font-bold text-gold text-2xl">
+                                        <div>{{ ship.guns }} <span class="text-xs uppercase opacity-50 block">Meriam</span></div>
+                                        <div>{{ ship.crew }} <span class="text-xs uppercase opacity-50 block">Kru</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1516733968668-dbdce39c46ef?auto=format&fit=crop&q=80&w=1000" class="img-archive w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BAB 4: Batavia -->
+            <section id="sec4" class="sec-padding max-w-7xl mx-auto border-b border-stone-300">
+                <div class="chapter-header">
+                    <h2 class="chapter-title-main">Bab IV: Inti Kekuasaan</h2>
+                    <div class="line"></div>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-24 items-center">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1579546671585-023b035c5f88?auto=format&fit=crop&q=80&w=1000" class="img-archive shadow-[30px_30px_0_0_rgba(124,45,18,0.2)]">
+                    </div>
+                    <div class="space-y-10 text-2xl font-old leading-relaxed text-justify text-stone-800">
+                        <p>Batavia didirikan di atas Jayakarta yang ditaklukkan oleh Jan Pieterszoon Coen pada 1619. Sebagai kantor pusat (<em>Hoofdkwartier</em>), kota ini dirancang menyerupai kota di Belanda, lengkap dengan kanal-kanal dan rumah bertembok tebal.</p>
+                        <p>Batavia menjadi pusat administrasi seluruh kekaisaran dagang VOC di Asia—dari Jepang hingga Tanjung Harapan. Namun, Batavia juga dikenal sebagai <em>Het Moordgat</em> (Lubang Pembunuhan) karena buruknya sanitasi kanal yang menyebabkan wabah penyakit Malaria dan Kolera meluas.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BAB 6: Monopoli Rempah -->
+            <section id="sec6" class="sec-padding max-w-7xl mx-auto border-b border-stone-300">
+                <div class="chapter-header">
+                    <h2 class="chapter-title-main">Bab V: Monopoli Rempah</h2>
+                    <div class="line"></div>
+                </div>
+                <div class="grid md:grid-cols-3 gap-12">
+                    <div v-for="spice in spicesExtended" :key="spice.name" class="p-12 bg-white border-2 border-stone-200 hover:border-gold transition-all shadow-xl group">
+                        <div class="text-8xl mb-12 group-hover:scale-125 transition-transform duration-700 text-center">{{ spice.icon }}</div>
+                        <h4 class="font-cinzel text-4xl font-bold mb-8 text-blood border-b-2 border-blood/20 pb-4">{{ spice.name }}</h4>
+                        <div class="space-y-6">
+                            <p class="font-old text-2xl text-stone-700 leading-relaxed">{{ spice.desc }}</p>
+                            <div class="bg-blood/5 p-6 border-l-4 border-blood">
+                                <p class="text-xs font-bold tracking-widest text-blood uppercase mb-2">Kebijakan:</p>
+                                <p class="text-lg italic font-bold text-stone-900">{{ spice.policy }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BAB 7: Perlawanan Nusantara -->
+            <section id="sec7" class="sec-padding bg-stone-100 border-b border-stone-300">
+                <div class="max-w-7xl mx-auto">
+                    <h2 class="font-cinzel text-5xl text-blood text-center mb-24">Bab VI: Perlawanan Lokal</h2>
+                    <div class="space-y-16">
+                        <div v-for="(war, index) in warsExtended" :key="war.title" class="flex flex-col md:flex-row gap-16 p-12 bg-white border-2 border-stone-200 shadow-2xl relative overflow-hidden">
+                            <div class="md:w-1/3 text-center border-r-2 border-stone-100 flex flex-col justify-center">
+                                <div class="font-cinzel text-8xl text-stone-300 font-black mb-4">{{ war.year }}</div>
+                                <div class="text-blood font-bold tracking-[0.3em] text-sm uppercase">Palagan Utama</div>
+                            </div>
+                            <div class="md:w-2/3">
+                                <h4 class="font-cinzel text-4xl font-bold text-ink mb-6">{{ war.title }}</h4>
+                                <div class="space-y-6 text-2xl font-old leading-relaxed text-stone-700">
+                                    <p class="font-bold italic text-blood">{{ war.hero }}</p>
+                                    <p>{{ war.desc }}</p>
+                                    <div class="text-sm p-4 bg-stone-50 border border-stone-200 uppercase tracking-widest font-bold">Dampak: {{ war.outcome }}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="relative group">
-                        <img src="https://images.unsplash.com/photo-1585806110294-aa69199d7966?auto=format&fit=crop&q=80&w=800" 
-                             alt="Manuscript" class="rounded shadow-2xl sepia group-hover:sepia-0 transition-all duration-700">
-                        <div class="absolute inset-0 border-2 border-gold/30 m-4 pointer-events-none"></div>
-                    </div>
                 </div>
             </section>
 
-            <!-- Section: Spices & Monopoly -->
-            <section id="monopoly" class="py-20 bg-stone-100/50">
-                <div class="max-w-6xl mx-auto px-6">
-                    <div class="text-center mb-16">
-                        <h2 class="font-cinzel text-5xl mb-4">Komoditas Utama</h2>
-                        <p class="text-stone-500 font-serif italic">Harta karun Nusantara yang diperebutkan dunia.</p>
-                        <div class="w-24 h-1 bg-blood mx-auto mt-4"></div>
+            <!-- BAB 11: Akhir Riwayat -->
+            <section id="sec11" class="sec-padding max-w-5xl mx-auto">
+                <div class="text-center mb-24">
+                    <h2 class="font-blackletter text-[10rem] text-blood mb-6 leading-none">Kehancuran</h2>
+                    <p class="font-cinzel text-stone-500 tracking-[1em] text-sm uppercase">1799 - Akhir Sang Raksasa</p>
+                </div>
+                <div class="space-y-16 text-3xl font-old leading-loose text-justify text-stone-800">
+                    <p>Setelah dua abad menguasai perdagangan dunia, VOC akhirnya menyerah bukan pada kekuatan militer asing, melainkan pada pembusukan internal: <strong>Korupsi Sistemik</strong>.</p>
+                    <p>Pejabat-pejabat VOC seringkali melakukan perdagangan gelap secara pribadi dan memanipulasi pembukuan perusahaan. Ditambah dengan beban biaya perang yang terus membengkak, neraca keuangan VOC tidak pernah sehat lagi.</p>
+                    <p>Pada 31 Desember 1799, VOC resmi dibubarkan. Seluruh aset dan utangnya diambil alih oleh Pemerintah Kerajaan Belanda, menandai dimulainya era Hindia Belanda secara resmi.</p>
+                </div>
+            </section>
+
+            <!-- SEKSI: WAJAH TIM PENELITI (KELOMPOK 3) -->
+            <section id="team" class="sec-padding bg-ink text-stone-300">
+                <div class="max-w-7xl mx-auto">
+                    <div class="text-center mb-32">
+                        <p class="font-cinzel text-gold text-sm tracking-[1.5em] mb-6 uppercase">Wajah Para Peneliti</p>
+                        <h2 class="font-blackletter text-8xl text-gold mb-6">Kelompok 3</h2>
+                        <div class="w-48 h-1 bg-gold mx-auto"></div>
                     </div>
                     
-                    <div class="grid md:grid-cols-4 gap-6">
-                        <div v-for="spice in filteredSpices" :key="spice.name" class="group bg-white p-8 border border-stone-200 hover:border-gold transition-all duration-500 hover:-translate-y-2 shadow-lg">
-                            <div class="w-16 h-16 bg-stone-100 flex items-center justify-center rounded-full mb-6 group-hover:bg-gold transition-colors">
-                                <i :class="['ph-fill text-3xl group-hover:text-white', spice.icon]"></i>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 justify-items-center">
+                        <div v-for="member in teamExtended" :key="member.name" class="flex flex-col items-center group">
+                            <!-- TEMPAT FOTO WAJAH -->
+                            <div class="profile-frame mb-8">
+                                <img :src="member.photo" :alt="'Foto ' + member.name" onerror="this.src='https://via.placeholder.com/250x320?text=Foto+Wajah'">
                             </div>
-                            <h3 class="font-cinzel text-xl font-bold mb-3">{{ spice.name }}</h3>
-                            <p class="text-stone-600 text-sm leading-relaxed mb-4">{{ spice.desc }}</p>
-                            <div class="text-xs font-bold text-gold tracking-widest uppercase">Valuasi: {{ spice.value }}</div>
+                            <!-- NAMA & ROLE -->
+                            <h3 class="font-cinzel text-3xl text-gold mb-4 group-hover:text-white transition-colors uppercase tracking-widest">{{ member.name }}</h3>
+                            <p class="text-[12px] uppercase tracking-[0.5em] text-stone-500 mb-6 border-b border-stone-800 pb-4 font-bold">{{ member.role }}</p>
+                            <p class="text-lg font-old italic text-stone-400 text-center px-4">
+                                "{{ member.quote }}"
+                            </p>
                         </div>
                     </div>
-                </div>
-            </section>
 
-            <!-- Section: Navigation Route Map -->
-            <section id="peta" class="py-20 px-6 max-w-7xl mx-auto">
-                <div class="text-center mb-12">
-                    <h2 class="font-cinzel text-4xl mb-4">Rute Pelayaran & Peta Kekuasaan</h2>
-                </div>
-                <div class="relative border-4 border-gold rounded-xl p-2 bg-stone-900 overflow-hidden shadow-2xl">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/VOC_Trade_Route.png/1200px-VOC_Trade_Route.png" 
-                         alt="Map of VOC routes" class="w-full opacity-80 hover:opacity-100 transition-opacity">
-                    <div class="absolute bottom-10 left-10 p-6 bg-black/80 backdrop-blur border border-gold text-gold max-w-sm">
-                        <h3 class="font-cinzel text-xl mb-2">The Cape Route</h3>
-                        <p class="text-xs text-white leading-loose">Kapal-kapal VOC menempuh perjalanan 8-9 bulan dari Amsterdam (Texel) menuju Batavia, singgah di Cape Town (Tanjung Harapan) untuk mengisi perbekalan.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Section: Governor Generals -->
-            <section id="tokoh" class="py-20 px-6 bg-stone-900 text-stone-200">
-                <div class="max-w-6xl mx-auto">
-                    <h2 class="font-cinzel text-4xl text-gold text-center mb-16 underline underline-offset-8">Gubernur Jenderal Berpengaruh</h2>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
-                        <div v-for="leader in leaders" :key="leader.name" class="flex flex-col items-center text-center group">
-                            <div class="w-64 h-80 overflow-hidden border-4 border-stone-800 grayscale hover:grayscale-0 transition-all duration-700 rounded-b-[100px] mb-6">
-                                <img :src="leader.image" class="w-full h-full object-cover">
-                            </div>
-                            <h3 class="font-cinzel text-2xl text-gold mb-1">{{ leader.name }}</h3>
-                            <p class="text-stone-500 text-xs mb-4 uppercase tracking-tighter">{{ leader.period }}</p>
-                            <p class="text-sm leading-relaxed italic text-stone-400">"{{ leader.legacy }}"</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Section: Timeline Downfall -->
-            <section id="downfall" class="py-24 px-6 max-w-4xl mx-auto">
-                <h2 class="font-blackletter text-6xl text-center text-blood mb-20">Kehancuran Sang Raksasa</h2>
-                <div class="space-y-16">
-                    <div v-for="(event, index) in timeline" :key="index" class="relative pl-12 border-l-2 border-blood/20 pb-8">
-                        <div class="absolute -left-2 top-0 w-4 h-4 rounded-full bg-blood shadow-[0_0_10px_red]"></div>
-                        <div class="font-cinzel text-2xl text-blood font-bold mb-2">{{ event.year }}</div>
-                        <h4 class="text-xl font-bold mb-3">{{ event.title }}</h4>
-                        <div class="grid md:grid-cols-2 gap-6 items-start">
-                            <p class="text-stone-600 leading-relaxed">{{ event.desc }}</p>
-                            <img :src="event.image" class="rounded shadow border border-stone-200">
-                        </div>
+                    <!-- Catatan Tambahan -->
+                    <div class="mt-32 text-center p-12 border-2 border-gold/20 bg-gold/5 max-w-4xl mx-auto rounded-sm shadow-2xl">
+                        <h4 class="font-cinzel text-gold text-xl mb-6">Pesan Penutup Kelompok 3</h4>
+                        <p class="font-old italic text-stone-400 text-2xl leading-relaxed">
+                            "Mempelajari VOC bukan tentang merayakan kolonialisme, melainkan memahami kompleksitas ambisi manusia dan bagaimana korporasi besar mampu mengubah takdir sebuah bangsa selama dua abad."
+                        </p>
                     </div>
                 </div>
             </section>
@@ -232,119 +416,139 @@
         </main>
 
         <!-- Footer -->
-        <footer class="bg-black py-20 px-6 border-t-4 border-gold">
-            <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-12 text-stone-500">
-                <div>
-                    <h3 class="font-cinzel text-gold text-xl mb-6">VOC Archive Project</h3>
-                    <p class="text-sm leading-relaxed">Sebuah inisiatif digital untuk merawat memori kolektif sejarah perdagangan dunia dan pengaruhnya terhadap pembentukan identitas Nusantara.</p>
+        <footer class="bg-ink text-stone-500 py-32 px-12 border-t-[15px] border-gold">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-24 text-center md:text-left">
+                <div class="md:col-span-2 space-y-12">
+                    <h3 class="font-blackletter text-8xl text-gold mb-8 leading-none">Kelompok 3</h3>
+                    <p class="font-old italic text-3xl text-stone-400 leading-relaxed max-w-xl mx-auto md:mx-0">
+                        "Sejarah adalah jembatan pengetahuan untuk memahami masa depan bangsa."
+                    </p>
                 </div>
-                <div>
-                    <h4 class="font-cinzel text-stone-300 mb-6">Navigasi Cepat</h4>
-                    <ul class="space-y-3 text-sm">
-                        <li><a href="#" class="hover:text-gold">Arsip Foto Batavia</a></li>
-                        <li><a href="#" class="hover:text-gold">Manifest Kapal (Ship Log)</a></li>
-                        <li><a href="#" class="hover:text-gold">Peta Pelayaran Kuno</a></li>
-                        <li><a href="#" class="hover:text-gold">Daftar Rempah Eksotis</a></li>
+                
+                <div class="space-y-10">
+                    <h5 class="font-cinzel text-stone-200 tracking-[0.5em] text-sm mb-12 border-l-4 border-gold pl-6 uppercase">Referensi Arsip</h5>
+                    <ul class="space-y-6 text-[11px] font-bold tracking-[0.3em] uppercase">
+                        <li>ANRI Republik Indonesia</li>
+                        <li>National Archives Netherlands</li>
+                        <li>VOC-Kenniscentrum Archive</li>
                     </ul>
                 </div>
-                <div class="text-center md:text-right">
-                    <p class="font-blackletter text-4xl text-gold mb-4">V.O.C</p>
-                    <p class="text-[10px] tracking-[0.2em] uppercase">Built for educational purpose by</p>
-                    <p class="text-stone-300 font-bold tracking-widest underline decoration-gold">DENIS PEDIA ENTERPRISE ARCHITECT</p>
+
+                <div class="flex flex-col items-center md:items-end justify-between">
+                    <div class="w-32 h-32 border-4 border-gold flex items-center justify-center font-blackletter text-7xl text-gold mb-12 shadow-2xl rotate-12">3</div>
+                    <div>
+                        <p class="font-cinzel text-gold text-[12px] mb-4 uppercase tracking-[0.3em]">Imperial Digital Exhibition</p>
+                        <p class="text-stone-200 font-bold text-2xl tracking-[0.2em]">PROYEK KELOMPOK 3 • 2024</p>
+                    </div>
                 </div>
-            </div>
-            <div class="mt-16 text-center text-[10px] tracking-[0.5em] text-stone-700">
-                &copy; 1602 - 1799 - 2024 ARCHIVUM BATAVIA. ALL RIGHTS RESERVED.
             </div>
         </footer>
 
     </div>
 
     <script>
-        const { createApp, ref, computed } = Vue;
+        const { createApp, ref } = Vue;
 
         createApp({
             setup() {
                 const isTheaterMode = ref(false);
                 const searchOpen = ref(false);
                 const searchQuery = ref('');
+                const audioPlaying = ref(false);
 
                 const toggleTheater = () => {
                     isTheaterMode.value = !isTheaterMode.value;
-                    if(isTheaterMode.value) window.scrollTo(0, 0);
+                    if(isTheaterMode.value) window.scrollTo({ top: 0, behavior: 'smooth' });
                 };
 
                 const toggleSearch = () => searchOpen.value = !searchOpen.value;
+                const toggleAudio = () => audioPlaying.value = !audioPlaying.value;
+                const goHome = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
-                const hakOktroi = [
-                    { title: "Monopoli Dagang", desc: "Hak eksklusif berdagang di wilayah timur Tanjung Harapan hingga Selat Magelhaens.", icon: "ph-shopping-cart-simple" },
-                    { title: "Kedaulatan Militer", desc: "Berhak memiliki tentara sendiri, membangun benteng, dan menyatakan perang atau damai.", icon: "ph-shield-checkered" },
-                    { title: "Pencetakan Uang", desc: "Mencetak mata uang sendiri (Duit/Gulden) yang berlaku sah di wilayah koloni.", icon: "ph-coins" },
-                    { title: "Pemerintahan Eksekutif", desc: "Mengangkat pegawai, gubernur, dan hakim untuk menjalankan hukum perusahaan.", icon: "ph-gavel" }
+                const navLinks = [
+                    { href: '#sec1', label: 'Genesis' },
+                    { href: '#sec2', label: 'Oktroi' },
+                    { href: '#sec4', label: 'Batavia' },
+                    { href: '#sec6', label: 'Monopoli' },
+                    { href: '#sec7', label: 'Perlawanan' },
+                    { href: '#team', label: 'Wajah Tim' }
                 ];
 
-                const spices = [
-                    { name: 'Pala (Nutmeg)', icon: 'ph-leaf', desc: 'Satu-satunya sumber di dunia berasal dari Kepulauan Banda. Sangat krusial untuk pengawet makanan.', value: '1 Pon = 7 Lembu' },
-                    { name: 'Cengkeh', icon: 'ph-plant', desc: 'Tanaman asli Maluku utara. VOC melakukan kebijakan Ekstirpasi untuk menjaga kestabilan harga.', value: 'Sangat Tinggi' },
-                    { name: 'Lada Hitam', icon: 'ph-drop', desc: 'Komoditas volume terbesar. Diambil dari Banten, Sumatera, dan pesisir Malabar, India.', value: 'Stabil' },
-                    { name: 'Kayu Manis', icon: 'ph-tree-evergreen', desc: 'Banyak ditemukan di Ceylon (Sri Lanka). Menjadi rebutan antara VOC dan Portugis.', value: 'Premium' }
+                const hakOktroiDetail = [
+                    { title: "Kedaulatan", desc: "Berhak menyatakan perang atau damai dengan kerajaan-kerajaan di Asia.", icon: "ph-sword" },
+                    { title: "Monopoli", desc: "Hak tunggal untuk memonopoli perdagangan rempah di wilayah Hindia Timur.", icon: "ph-package" },
+                    { title: "Mata Uang", desc: "Kewenangan mutlak untuk mencetak dan mengedarkan mata uang sendiri.", icon: "ph-coins" },
+                    { title: "Birokrasi", desc: "Hak untuk mengangkat gubernur, hakim, dan menjalankan administrasi negara.", icon: "ph-briefcase" }
                 ];
 
-                const leaders = [
+                const fleetData = [
+                    { name: "Spiegelretourschip", guns: "48", crew: "300", desc: "Kapal induk utama pengangkut rempah untuk pelayaran trans-samudra." },
+                    { name: "De Fluyt", guns: "12", crew: "35", desc: "Kapal kargo Belanda dengan lambung luas dan awak kapal minimalis." }
+                ];
+
+                const spicesExtended = [
+                    { name: "Cengkeh", icon: "🌿", desc: "Tanaman endemik Maluku. Nilainya setara emas putih di pasar Eropa.", policy: "Ekstirpasi: Penebangan pohon rakyat demi kestabilan harga." },
+                    { name: "Pala", icon: "🫘", desc: "Hanya ditemukan di Banda. Dicari sebagai pengawet makanan mewah.", policy: "Penaklukan Banda 1621: Monopoli paksa oleh J.P. Coen." },
+                    { name: "Lada Hitam", icon: "🧂", desc: "Komoditas volume terbesar dari Banten, Sumatera, dan India.", policy: "Sistem Penyerahan Wajib: Paksaan harga beli tetap." }
+                ];
+
+                const warsExtended = [
                     { 
-                        name: 'Pieter Both', 
-                        period: '1610 - 1614', 
-                        legacy: 'Gubernur Jenderal pertama. Ia mendirikan pos perdagangan di Banten dan Jayakarta.',
-                        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Pieter_Both.jpg/439px-Pieter_Both.jpg'
+                        year: "1628", 
+                        title: "Penyerbuan Sultan Agung", 
+                        hero: "Sultan Agung (Mataram)",
+                        desc: "Mataram mengirim ribuan pasukan mengepung Batavia guna mengusir monopoli kolonial.",
+                        outcome: "Kegagalan logistik Mataram karena lumbung padi dihancurkan VOC."
                     },
                     { 
-                        name: 'Jan Pieterszoon Coen', 
-                        period: '1619 - 1623 & 1627 - 1629', 
-                        legacy: 'Arsitek Batavia. Ia menaklukkan Jayakarta dan dikenal atas penaklukan berdarah di Kepulauan Banda.',
-                        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Jan_Pieterszoon_Coen.jpg/440px-Jan_Pieterszoon_Coen.jpg'
-                    },
-                    { 
-                        name: 'Joan Maetsuycker', 
-                        period: '1653 - 1678', 
-                        legacy: 'Masa jabatan terlama (25 tahun). Di bawah kepemimpinannya, wilayah kekuasaan VOC meluas hingga ke Ceylon dan Taiwan.',
-                        image: 'https://upload.wikimedia.org/wikipedia/commons/4/4b/Joan_Maetsuycker.jpg'
+                        year: "1667", 
+                        title: "Perang Makassar", 
+                        hero: "Sultan Hasanuddin (Gowa)",
+                        desc: "Perlawanan melawan monopoli rempah di Indonesia Timur.",
+                        outcome: "Perjanjian Bongaya yang melemahkan kekuatan Gowa."
                     }
                 ];
 
-                const timeline = [
-                    { 
-                        year: '1740', 
-                        title: 'Batavia Bloedbad (Pembantaian Batavia)', 
-                        desc: 'Ketegangan ekonomi memicu pembantaian massal etnis Tionghoa. Sekitar 10.000 jiwa melayang di Kali Besar, Batavia.',
-                        image: 'https://images.unsplash.com/photo-1599411933092-995202868c2d?auto=format&fit=crop&q=80&w=400'
-                    },
-                    { 
-                        year: '1795', 
-                        title: 'Republik Bataaf', 
-                        desc: 'Prancis menduduki Belanda, mengubah arah politik. VOC mulai kehilangan dukungan finansial dari pemerintah pusat.',
-                        image: 'https://images.unsplash.com/photo-1579546671585-023b035c5f88?auto=format&fit=crop&q=80&w=400'
-                    },
-                    { 
-                        year: '1799', 
-                        title: 'Likuidasi Resmi', 
-                        desc: 'Utang mencapai 136,7 juta Gulden. Pada 31 Desember 1799, VOC resmi dibubarkan dan seluruh asetnya diambil alih Kerajaan Belanda.',
-                        image: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=400'
-                    }
+                const governorsExtended = [
+                    { period: "1610 - 1614", name: "Pieter Both", note: "Gubernur Jenderal pertama VOC." },
+                    { period: "1619 - 1623", name: "J.P. Coen", note: "Arsitek Batavia dan penakluk Banda." },
+                    { period: "1797 - 1801", name: "P.G. Overstraten", note: "Pemimpin terakhir di masa pembubaran VOC." }
                 ];
 
-                const filteredSpices = computed(() => {
-                    if (!searchQuery.value) return spices;
-                    return spices.filter(s => 
-                        s.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-                        s.desc.toLowerCase().includes(searchQuery.value.toLowerCase())
-                    );
-                });
+                // --- DATA WAJAH ANGGOTA KELOMPOK 3 ---
+                // Silakan ganti URL 'photo' dengan link foto asli kalian berempat.
+                const teamExtended = [
+                    { 
+                        name: "TEGAR", 
+                        role: "Ketua Peneliti", 
+                        quote: "Pemimpin harus memiliki visi yang tajam seperti J.P. Coen namun dengan hati Nusantara.",
+                        photo: "https://via.placeholder.com/250x320?text=Foto+Tegar" 
+                    },
+                    { 
+                        name: "KEANU", 
+                        role: "Arsiparis Visual", 
+                        quote: "Visual adalah jendela sejarah. Tanpa gambar, masa lalu akan terasa hampa.",
+                        photo: "https://via.placeholder.com/250x320?text=Foto+Keanu" 
+                    },
+                    { 
+                        name: "DANES", 
+                        role: "Analis Data", 
+                        quote: "Di balik setiap koin gulden, ada keringat dan sejarah yang terlupakan.",
+                        photo: "https://via.placeholder.com/250x320?text=Foto+Danes" 
+                    },
+                    { 
+                        name: "RASYID", 
+                        role: "Dokumentator", 
+                        quote: "Menyusun kepingan arsip adalah cara kita menghormati perjuangan leluhur.",
+                        photo: "https://via.placeholder.com/250x320?text=Foto+Rasyid" 
+                    }
+                ];
 
                 return {
-                    isTheaterMode, searchOpen, searchQuery,
-                    toggleTheater, toggleSearch,
-                    hakOktroi, spices, leaders, timeline,
-                    filteredSpices
+                    isTheaterMode, searchOpen, searchQuery, audioPlaying,
+                    toggleTheater, toggleSearch, toggleAudio, goHome,
+                    navLinks, hakOktroiDetail, fleetData, spicesExtended,
+                    warsExtended, governorsExtended, teamExtended
                 };
             }
         }).mount('#app');
